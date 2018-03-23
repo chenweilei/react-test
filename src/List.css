@@ -1,0 +1,20 @@
+		body{
+			padding-bottom: 5vw;
+		}
+		.page__bd .searchbar-result{
+			display: none;
+			margin-top: 0;
+			font-size: 14px;
+		}
+		.play-audio{
+			width: 7vw
+		}
+		.play-audio img{
+			width: 100%;
+		}
+		.loading{
+			display: none;
+		}
+		.loaded{
+			display: none;
+		}
