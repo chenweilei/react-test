@@ -1,39 +1,58 @@
 import React, {Component} from 'react'
 
 export default class ListCont extends Component{
-	
+	constructor(props){
+		super(props)
+		this.state = {
+			aShow: []
+		}
+	}
+	componentWillMount(){
+		console.log('ListCont: componentWillMount')
+	}
+	componentWillReceiveProps(props){
+		console.log('ListCont: componentWillReceiveProps')
+		this.setState({
+			aShow: new Array(props.list.length).fill(false)
+		})		
+	}
+	onClick(key, e){
+		let arr = this.state.aShow.slice(0);
+		arr[key] = !arr[key];
+		this.setState({
+			aShow: arr
+		})
+	}
+	onClickPlayAudio(key, e){
+		this.refs['audio'+key].play();
+	}
 	getList(){
 		let data = this.props.list;
-
 		data = data.map((val, key) => {
 			let {id, title, cont, audio} = val;
 
 			return(
-				<div style={{borderBottom: '1px silid #e5e5e5'}}>	
-					<a className="weui-cell weui-cell_access" href="javascript:;">
+				<div key={key} style={{borderBottom: '1px silid #e5e5e5', display: (this.props.searchShowId === null || this.props.searchShowId === id ) ?'block': 'none'}}>	
+					<a onClick={this.onClick.bind(this, key)} className="weui-cell weui-cell_access" href="javascript:;">
 						<div className="weui-cell__bd">
-							<p>1.用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名用户名</p>
+							<p>{title}</p>
 						</div>
 						<div className="weui-cell__ft">
 						</div>
 					</a>
-					<div>
+					<div style={{display: this.state.aShow[key]?'block':'none'}}>
 						<div className="weui-article">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat.                        
-							</p>
-							<div className="play-audio">
-								<img src="./images/login/audio.png" alt="" />
-								<audio src="./images/login/endbgm.MP3"></audio>
+							<p>{cont}</p>
+							<div onClick={this.onClickPlayAudio.bind(this, key)} className="play-audio">
+								<img src="./images/audio.jpg" alt="" />
+								<audio ref={`audio${key}`} src={`./images/${audio}`}></audio>
 							</div>
 						</div>
 					</div>
 				</div>
 			)
 		})
+		return data;
 	}
 
 	render(){

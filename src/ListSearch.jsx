@@ -10,11 +10,16 @@ export default class ListSearch extends Component{
 		}
 	}
 	componentWillMount(){
-		fetch('/data.json')
-			.then( res => res.json() )
-			.then( data => { 
-				this.data = data;
-			} )
+		//console.log('children: componentWillMount')
+		//console.log(this.props.listdata)
+	}
+	componentDidMount(){
+		///console.log('children: componentDidMount')
+	}
+	componentWillReceiveProps(props){
+		//console.log('children: componentWillReceiveProps')
+		//console.log(props)
+		this.data = props.listdata
 	}
 	onClick(){
 		this.setState({
@@ -46,16 +51,23 @@ export default class ListSearch extends Component{
 		})
 	}
 	onClickCancel(){
+		this.props.onClickCancel();
 		this.setState({
 			inputShow: false,
-			value: ''
+			value: '',
+		})
+	}
+	onClickSearch(id){
+		this.props.onClickSearch(id);
+		this.setState({
+			listdata: []
 		})
 	}
 	getFilterList(){
 
 		return this.state.listdata.map((val, key) =>{
 			return (
- 				<div key={key} className="weui-cell weui-cell_access">
+ 				<div key={key} onClick={this.onClickSearch.bind(this, val.id)} className="weui-cell weui-cell_access">
 					<div className="weui-cell__bd weui-cell_primary">
 						<p>{val.title}</p>
 					</div>
